@@ -20,7 +20,7 @@ public class Main {
     
     public static void main(String[] args){
         try(Scanner s = new Scanner(new File("input.txt"))){
-            List<RegulaProductie> reguli = new LinkedList<>();
+            List<ProductionRule> reguli = new LinkedList<>();
             while(s.hasNextLine()){
                 String[] aux = s.nextLine().split(" ");
                 Config auxC;
@@ -30,15 +30,19 @@ public class Main {
                     to.add(aux[i]);
                 }
                 auxC = new Config(from, to);
-                reguli.add(new RegulaProductie(from, to));
+                reguli.add(new ProductionRule(from, to));
             }
             System.out.println(reguli);
-        }catch(FileNotFoundException ex){
+            Utils.initFirstMap(reguli);
+        }catch(FileNotFoundException ex) {
             System.out.println("Du-te acasa");
         }
+
+        System.out.println(Utils.firstMap);
+
     }
     
-    public static void verificareLR1(List<RegulaProductie> reguli){
+    public static void verificareLR1(List<ProductionRule> reguli){
         List<String> to = new LinkedList<>();
         to.add("S");
         Config start = new Config('T', to);

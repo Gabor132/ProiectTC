@@ -11,11 +11,11 @@ import java.util.List;
  *
  * @author Dragos
  */
-public class RegulaProductie {
+public class ProductionRule {
     public Character from;
     public List<String> to;
 
-    public RegulaProductie(Character from, List<String> to) {
+    public ProductionRule(Character from, List<String> to) {
         this.from = from;
         this.to = to;
     }
