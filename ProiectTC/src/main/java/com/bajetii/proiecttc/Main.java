@@ -31,6 +31,7 @@ public class Main {
             Utils.initUtils(rules);
             Utils.generateAndPrintFirstMap();
             verificareLR1(rules);
+            Utils.generateAndPrintFollowMap();
         }catch(FileNotFoundException ex) {
             System.out.println("Du-te acasa");
         }
