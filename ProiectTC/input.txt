@@ -1,3 +1,4 @@
-S XX
-X aX
-X b
+X XbX
+X XcX
+X X
+X a

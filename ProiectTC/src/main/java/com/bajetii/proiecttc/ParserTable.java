@@ -85,15 +85,16 @@ public class ParserTable {
                         if(rows.get(currentI.index).actions.get(c).type == ActionType.REDUCE ||
                                 rows.get(currentI.index).actions.get(c).type == ActionType.SHIFT){
                             hasConflicts = true;
-                        }
-                        rows.get(currentI.index).actions.get(c).type = ActionType.REDUCE;
-                        for(int i = 0; i < rules.size(); i++){
-                            if(rules.get(i).equals(config)){
-                                if(i == 0){
-                                    rows.get(currentI.index).actions.get(c).type = ActionType.ACCEPT;
+                        }else{
+                            rows.get(currentI.index).actions.get(c).type = ActionType.REDUCE;
+                            for(int i = 0; i < rules.size(); i++){
+                                if(rules.get(i).equals(config)){
+                                    if(i == 0){
+                                        rows.get(currentI.index).actions.get(c).type = ActionType.ACCEPT;
+                                    }
+                                    rows.get(currentI.index).actions.get(c).stateIndex = i;
+                                    break;
                                 }
-                                rows.get(currentI.index).actions.get(c).stateIndex = i;
-                                break;
                             }
                         }
                     }
@@ -101,8 +102,12 @@ public class ParserTable {
             }
             for(Pair<Character, Configs> tranzition : currentI.tranzitions){
                 if(Character.isLowerCase(tranzition.getKey()) || tranzition.getKey().equals('$')){
-                    rows.get(currentI.index).actions.get(tranzition.getKey()).type = ActionType.SHIFT;
-                    rows.get(currentI.index).actions.get(tranzition.getKey()).stateIndex = tranzition.getValue().index;
+                    if(rows.get(currentI.index).actions.get(tranzition.getKey()).type == ActionType.REDUCE){
+                        hasConflicts = true;
+                    }else{
+                        rows.get(currentI.index).actions.get(tranzition.getKey()).type = ActionType.SHIFT;
+                        rows.get(currentI.index).actions.get(tranzition.getKey()).stateIndex = tranzition.getValue().index;
+                    }
                 }else{
                     rows.get(currentI.index).actions.get(tranzition.getKey()).type = ActionType.TRANSITION;
                     rows.get(currentI.index).actions.get(tranzition.getKey()).stateIndex = tranzition.getValue().index;

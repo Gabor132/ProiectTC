@@ -26,7 +26,6 @@ public class Main {
         try(Scanner s = new Scanner(new File("input.txt"))){
             elements = new HashSet<>();
             List<ProductionRule> rules = new LinkedList<>();
-            rules.add(new ProductionRule('T', "S"));
             while(s.hasNextLine()){
                 String from = s.next();
                 String to = s.next();
@@ -36,11 +35,13 @@ public class Main {
                 }
                 rules.add(new ProductionRule(from.charAt(0), to));
             }
+            rules.add(new ProductionRule('T', rules.get(0).from + ""));
             elements.add('$');
             System.out.println(rules);
             Utils.initUtils(rules);
             Utils.generateAndPrintFirstMap();
             ParserTable table = verificareLR1(rules);
+            Utils.generateAndPrintFollowMap();
         }catch(FileNotFoundException ex) {
             System.out.println("Du-te acasa");
         }
