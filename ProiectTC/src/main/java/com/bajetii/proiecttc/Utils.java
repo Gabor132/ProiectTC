@@ -37,7 +37,8 @@ public class Utils {
             else {
                 if (rulesMap.get(c) != null)
                     for (String s: rulesMap.get(c))
-                        set.addAll(first(s.charAt(0)));
+                        if (s.charAt(0) != c)
+                            set.addAll(first(s.charAt(0)));
             }
             firstMap.put(c, set);
         }
