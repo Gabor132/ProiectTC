@@ -43,8 +43,10 @@ public class ParserTable {
     }
     
     public List<ParserRow> rows;
-    
+    private List<ProductionRule> rules;
+
     public ParserTable(List<Character> elements, List<Configs> automat, List<ProductionRule> rules){
+        this.rules = rules;
         Character[] auxE = new Character[elements.size()];
         System.out.println("Rules: "+rules);
         Arrays.sort(elements.toArray(auxE), new Comparator<Character>() {
@@ -121,7 +123,15 @@ public class ParserTable {
     public Action getAction(Configs I, Character c){
         return rows.get(I.index).actions.get(c);
     }
-    
+
+    public Action getAction(int state, Character c){
+        return rows.get(state).actions.get(c);
+    }
+
+    public List<ProductionRule> getProductionRules() {
+        return rules;
+    }
+
     @Override
     public String toString(){
         String s = "";

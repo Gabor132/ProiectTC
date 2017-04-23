@@ -42,8 +42,21 @@ public class Main {
             Utils.generateAndPrintFirstMap();
             ParserTable table = verificareLR1(rules);
             Utils.generateAndPrintFollowMap();
+            parseInputStrings(table);
         }catch(FileNotFoundException ex) {
             System.out.println("Du-te acasa");
+        }
+    }
+
+    public static void parseInputStrings(ParserTable table) {
+        try (Scanner reader = new Scanner(new File("strings.txt"))) {
+            Parser parser = new Parser(table);
+            while (reader.hasNextLine()) {
+                String s = reader.nextLine();
+                System.out.println(parser.accept(s));
+            }
+        } catch (FileNotFoundException ex) {
+            System.out.println("Du-te acasa2");
         }
     }
     

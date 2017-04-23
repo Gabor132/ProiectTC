@@ -1,6 +1,3 @@
-S S;A
-S A
-A E
-A i=E
-E E+i
-E i
+S XX
+X aX
+X b
