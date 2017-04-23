@@ -61,7 +61,7 @@ public class Main {
     }
     
     public static ParserTable verificareLR1(List<ProductionRule> rules){
-        Config start = new Config('T', "S");
+        Config start = rules.get(rules.size()-1).getConfig();
         List<Configs> automat = new LinkedList<>();
         LinkedList<Configs> queueConfigs = new LinkedList<>();
         List<Config> startList = new LinkedList<>();
@@ -80,22 +80,33 @@ public class Main {
             for(Config config : I.configs){
                 try{
                     char cForTransition = config.getMarkedByDot();
-                    LinkedList<Config> newListConfig = new LinkedList<>();
-                    Config newConfig;
-                    for(ProductionRule rule : rules){
-                        if(rule.equals(config)){
-                            newConfig = rule.getConfig();
-                            newConfig.index = config.index+1;
-                            newConfig.lookAhead = config.lookAhead;
-                            if(Utils.configAlreadyExistsInAutomat(automat, newConfig))
-                                continue;
-                            newListConfig.add(newConfig);
-                            Configs newConfigs = new Configs(newListConfig);
-                            queueConfigs.addLast(newConfigs);
-                            automat.add(newConfigs);
-                            Pair<Character, Configs> tranzition = new Pair<>(cForTransition, newConfigs);
-                            I.tranzitions.add(tranzition);
+                    LinkedList<Config> similarConfigs = new LinkedList<>();
+                    similarConfigs.add(config);
+                    for(Config config2 : I.configs){
+                        if(config.hasSameTransitionChar(config2)){
+                            similarConfigs.add(config2);
                         }
+                    }
+                    LinkedList<Config> newListConfig = new LinkedList<>();
+                    for(Config config2 : similarConfigs){
+                        Config newConfig;
+                        for(ProductionRule rule : rules){
+                            if(rule.equals(config2)){
+                                newConfig = rule.getConfig();
+                                newConfig.index = config2.index+1;
+                                newConfig.lookAhead = config2.lookAhead;
+                                if(Utils.configAlreadyExistsInAutomat(automat, newConfig))
+                                    continue;
+                                newListConfig.add(newConfig);
+                            }
+                        }
+                    }
+                    if(!newListConfig.isEmpty()){
+                        Configs newConfigs = new Configs(newListConfig);
+                        queueConfigs.addLast(newConfigs);
+                        automat.add(newConfigs);
+                        Pair<Character, Configs> tranzition = new Pair<>(cForTransition, newConfigs);
+                        I.tranzitions.add(tranzition);
                     }
                 }catch(IndexOutOfBoundsException ex){
                 }

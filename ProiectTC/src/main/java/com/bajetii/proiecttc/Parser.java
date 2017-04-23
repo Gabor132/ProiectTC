@@ -23,8 +23,10 @@ public class Parser {
         Action action = new Action(ActionType.ERROR, -1);
         while (i < s.length()) {
             char currentChar = s.charAt(i);
-
+            System.out.println("We are at state "+ state + " and we read "+currentChar);
+            System.out.println(stack);
             action = parserTable.getAction(state, currentChar);
+            System.out.println(action);
             if (action.type == ActionType.TRANSITION)
                 state = action.stateIndex;
             else if (action.type == ActionType.SHIFT) {

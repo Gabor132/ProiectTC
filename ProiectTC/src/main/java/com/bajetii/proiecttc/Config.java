@@ -43,6 +43,16 @@ public class Config {
         return to.charAt(index);
     }
     
+    public boolean hasSameTransitionChar(Config c){
+        try{
+            char a = getMarkedByDot();
+            char b = c.getMarkedByDot();
+            return a == b;
+        }catch(IndexOutOfBoundsException ex){
+            return false;
+        }
+    }
+    
     public boolean isMarkedOut(){
         return index == to.length();
     }

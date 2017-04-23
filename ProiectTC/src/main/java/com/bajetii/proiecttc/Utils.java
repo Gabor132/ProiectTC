@@ -88,7 +88,7 @@ public class Utils {
     
     public static void closure(Configs I, List<ProductionRule> rules){
         LinkedList<Config> configurations = new LinkedList<>();
-        configurations.push(I.configs.get(0));
+        configurations.addAll(I.configs);
         Set<Config> vizitedConfigs = new HashSet();
         vizitedConfigs.add(I.configs.get(0));
         while(configurations.size() > 0){

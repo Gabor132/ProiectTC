@@ -104,7 +104,7 @@ public class ParserTable {
                 }
             }
             for(Pair<Character, Configs> tranzition : currentI.tranzitions){
-                if(Character.isLowerCase(tranzition.getKey()) || tranzition.getKey().equals('$')){
+                if(Character.isLowerCase(tranzition.getKey()) || !Character.isAlphabetic(tranzition.getKey()) || tranzition.getKey().equals('$')){
                     if(rows.get(currentI.index).actions.get(tranzition.getKey()).type == ActionType.REDUCE){
                         hasConflicts = true;
                     }else{
