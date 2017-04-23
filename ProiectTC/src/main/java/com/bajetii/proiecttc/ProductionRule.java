@@ -28,5 +28,8 @@ public class ProductionRule {
         return  from + " -> " + to;
     }
     
+    public boolean equals(Config c){
+        return this.from.equals(c.from) && this.to.equals(c.to);
+    }
     
 }

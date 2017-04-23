@@ -25,27 +25,12 @@ public class Configs {
     public Configs(List<Config> configs){
         this.configs = configs;
         this.index = nextIndex;
+        this.tranzitions = new LinkedList<>();
         nextIndex++;
     }
     
     public static void follow(){
         
-    }
-    
-    public static void closure(Configs I, List<ProductionRule> rules){
-        LinkedList<Config> configurations = new LinkedList<>();
-        configurations.push(I.configs.get(0));
-        while(configurations.size() > 0){
-            Config currentConfig = configurations.pop();
-            List<ProductionRule> neededRules = new LinkedList<>();
-            for(ProductionRule rule : rules){
-                if(Objects.equals(rule.from, currentConfig.getMarkedByDot())){
-                    neededRules.add(rule);
-                }
-            }
-            String firstS = currentConfig.getAfterDot();
-            Set<String> newLookAhead = Utils.first(firstS);
-        }
     }
     
     public static void goTo(){
