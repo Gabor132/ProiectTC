@@ -14,11 +14,11 @@ import java.util.List;
  */
 public class Config {
     public Character from;
-    public List<String> to;
+    public String to;
     public List<Character> lookAhead;
     public int index;
 
-    public Config(Character from, List<String> to) {
+    public Config(Character from, String to) {
         this.from = from;
         this.to = to;
         this.lookAhead = new LinkedList<>();
@@ -26,18 +26,31 @@ public class Config {
         this.index = 0;
     }
     
-    public Config(Character from, List<String> to, List<Character> lookAhead) {
+    public Config(Character from, String to, List<Character> lookAhead) {
         this.from = from;
         this.to = to;
         this.lookAhead = lookAhead;
         this.index = 0;
     }
     
+    public String getAfterDot(){
+        String s = "";
+        s += to.substring(index);
+        for(Character c : lookAhead){
+            s+=c;
+        }
+        return s;
+    }
+    
+    public Character getMarkedByDot(){
+        return to.charAt(index);
+    }
+    
     @Override
     public String toString(){
         String s = from + " -> ";
-        for(String auxS : to){
-            s += auxS + " ";
+        for(Character auxC : to.toCharArray()){
+            s += auxC + " ";
         }
         s += ",";
         for(Character c : lookAhead){

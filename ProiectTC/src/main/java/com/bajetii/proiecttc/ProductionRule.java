@@ -5,8 +5,6 @@
  */
 package com.bajetii.proiecttc;
 
-import java.util.List;
-
 /**
  *
  * @author Dragos
@@ -19,7 +17,12 @@ public class ProductionRule {
         this.from = from;
         this.to = to;
     }
-
+    
+    public Config getConfig(){
+        Config config = new Config(from, to);
+        return config;
+    }
+    
     @Override
     public String toString() {
         return  from + " -> " + to;

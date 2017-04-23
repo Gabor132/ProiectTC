@@ -20,7 +20,7 @@ public class Main {
     
     public static void main(String[] args){
         try(Scanner s = new Scanner(new File("input.txt"))){
-            List<ProductionRule> reguli = new LinkedList<>();
+            List<ProductionRule> rules = new LinkedList<>();
             while(s.hasNextLine()){
                 String from = s.next();
                 String to = s.next();
@@ -34,11 +34,16 @@ public class Main {
         }
     }
     
-    public static void verificareLR1(List<ProductionRule> reguli){
-        List<String> to = new LinkedList<>();
-        to.add("S");
-        Config start = new Config('T', to);
+    public static void verificareLR1(List<ProductionRule> rules){
+        Config start = new Config('T', "S");
         List<Configs> automat = new LinkedList<>();
+        LinkedList<Configs> queueConfigs = new LinkedList<>();
         Configs I0 = new Configs(Arrays.asList(start));
+        boolean new_configs_added = true;
+        while(queueConfigs.size() > 0){
+            Configs I = queueConfigs.pop();
+            Configs.closure(I, rules);
+            
+        }
     }
 }
