@@ -14,6 +14,9 @@ public enum ActionType {
     
     @Override
     public String toString(){
-        return this.name().charAt(0)+"";
+        if(this == TRANSITION){
+            return "I";
+        }
+        return this.name().substring(0, 2)+"";
     }
 }

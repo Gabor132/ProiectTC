@@ -27,6 +27,8 @@ public class Action {
     public String toString(){
         if(type == ActionType.ERROR)
             return "  ";
+        if(type == ActionType.ACCEPT)
+            return type + "";
         return type+""+stateIndex;
     }
 }

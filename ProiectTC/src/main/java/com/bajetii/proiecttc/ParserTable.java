@@ -46,6 +46,7 @@ public class ParserTable {
     
     public ParserTable(List<Character> elements, List<Configs> automat, List<ProductionRule> rules){
         Character[] auxE = new Character[elements.size()];
+        System.out.println("Rules: "+rules);
         Arrays.sort(elements.toArray(auxE), new Comparator<Character>() {
             @Override
             public int compare(Character o1, Character o2) {
@@ -92,7 +93,7 @@ public class ParserTable {
                                     if(i == 0){
                                         rows.get(currentI.index).actions.get(c).type = ActionType.ACCEPT;
                                     }
-                                    rows.get(currentI.index).actions.get(c).stateIndex = i;
+                                    rows.get(currentI.index).actions.get(c).stateIndex = i+1;
                                     break;
                                 }
                             }

@@ -37,7 +37,8 @@ public class Utils {
             else {
                 if (rulesMap.get(c) != null)
                     for (String s: rulesMap.get(c))
-                        set.addAll(first(s.charAt(0)));
+                        if (s.charAt(0) != c)
+                            set.addAll(first(s.charAt(0)));
             }
             firstMap.put(c, set);
         }
@@ -88,8 +89,11 @@ public class Utils {
     public static void closure(Configs I, List<ProductionRule> rules){
         LinkedList<Config> configurations = new LinkedList<>();
         configurations.push(I.configs.get(0));
+        Set<Config> vizitedConfigs = new HashSet();
+        vizitedConfigs.add(I.configs.get(0));
         while(configurations.size() > 0){
             Config currentConfig = configurations.pop();
+            System.out.println("Working with " + currentConfig);
             List<Config> newConfig = new LinkedList<>();
             try{
                 char cForClosure = currentConfig.getMarkedByDot();
@@ -113,8 +117,12 @@ public class Utils {
                 }
             }
             for(Config config : newConfig){
-                I.configs.add(config);
-                configurations.push(config);
+                if(!vizitedConfigs.contains(config)){
+                    I.configs.add(config);
+                    System.out.println("Found: "+config);
+                    configurations.push(config);
+                    vizitedConfigs.add(config);
+                }
             }
         }
     }

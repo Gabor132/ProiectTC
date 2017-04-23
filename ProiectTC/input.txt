@@ -1,4 +1,6 @@
-X XbX
-X XcX
-X X
-X a
+S S;A
+S A
+A E
+A i=E
+E E+i
+E i

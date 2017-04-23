@@ -95,6 +95,7 @@ public class Main {
     public static ParserTable generateParserTable(List<Configs> automat, List<ProductionRule> rules){
         List<Character> auxElem = new LinkedList<>();
         auxElem.addAll(elements);
+        rules.remove(rules.size()-1);
         ParserTable table = new ParserTable(auxElem, automat, rules);
         System.out.println(table);
         System.out.println("Is grammar LR(1)? " + !table.hasConflicts);
