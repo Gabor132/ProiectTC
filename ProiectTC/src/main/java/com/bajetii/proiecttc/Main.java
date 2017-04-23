@@ -90,6 +90,12 @@ public class Main {
         }
         System.out.println("Automatul: \n" + automat);
         return generateParserTable(automat, rules);
+        boolean new_configs_added = true;
+        while(queueConfigs.size() > 0){
+            Configs I = queueConfigs.pop();
+            Configs.closure(I, rules);
+            
+        }
     }
     
     public static ParserTable generateParserTable(List<Configs> automat, List<ProductionRule> rules){
