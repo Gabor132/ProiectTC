@@ -118,6 +118,10 @@ public class ParserTable {
         }
     }
     
+    public Action getAction(Configs I, Character c){
+        return rows.get(I.index).actions.get(c);
+    }
+    
     @Override
     public String toString(){
         String s = "";
