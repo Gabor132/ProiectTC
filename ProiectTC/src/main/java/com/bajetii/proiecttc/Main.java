@@ -7,9 +7,11 @@ package com.bajetii.proiecttc;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 import javafx.util.Pair;
 
 /**
@@ -18,25 +20,33 @@ import javafx.util.Pair;
  */
 public class Main {
     
+    static Set<Character> elements;
+    
     public static void main(String[] args){
         try(Scanner s = new Scanner(new File("input.txt"))){
+            elements = new HashSet<>();
             List<ProductionRule> rules = new LinkedList<>();
             rules.add(new ProductionRule('T', "S"));
             while(s.hasNextLine()){
                 String from = s.next();
                 String to = s.next();
+                elements.add(from.toCharArray()[0]);
+                for(char c : to.toCharArray()){
+                    elements.add(c);
+                }
                 rules.add(new ProductionRule(from.charAt(0), to));
             }
+            elements.add('$');
             System.out.println(rules);
             Utils.initUtils(rules);
             Utils.generateAndPrintFirstMap();
-            verificareLR1(rules);
+            ParserTable table = verificareLR1(rules);
         }catch(FileNotFoundException ex) {
             System.out.println("Du-te acasa");
         }
     }
     
-    public static void verificareLR1(List<ProductionRule> rules){
+    public static ParserTable verificareLR1(List<ProductionRule> rules){
         Config start = new Config('T', "S");
         List<Configs> automat = new LinkedList<>();
         LinkedList<Configs> queueConfigs = new LinkedList<>();
@@ -77,8 +87,16 @@ public class Main {
                 }
             }
         }
-        
         System.out.println("Automatul: \n" + automat);
+        return generateParserTable(automat, rules);
     }
     
+    public static ParserTable generateParserTable(List<Configs> automat, List<ProductionRule> rules){
+        List<Character> auxElem = new LinkedList<>();
+        auxElem.addAll(elements);
+        ParserTable table = new ParserTable(auxElem, automat, rules);
+        System.out.println(table);
+        System.out.println("Is grammar LR(1)? " + !table.hasConflicts);
+        return table;
+    }
 }

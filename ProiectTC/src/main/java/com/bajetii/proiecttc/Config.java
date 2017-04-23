@@ -43,6 +43,10 @@ public class Config {
         return to.charAt(index);
     }
     
+    public boolean isMarkedOut(){
+        return index == to.length();
+    }
+    
     @Override
     public String toString(){
         String s = from + " -> ";
