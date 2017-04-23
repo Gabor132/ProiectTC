@@ -22,24 +22,16 @@ public class Main {
         try(Scanner s = new Scanner(new File("input.txt"))){
             List<ProductionRule> reguli = new LinkedList<>();
             while(s.hasNextLine()){
-                String[] aux = s.nextLine().split(" ");
-                Config auxC;
-                Character from = aux[0].charAt(0);
-                List<String> to = new LinkedList<>();
-                for(int i = 1; i<aux.length; i++){
-                    to.add(aux[i]);
-                }
-                auxC = new Config(from, to);
-                reguli.add(new ProductionRule(from, to));
+                String from = s.next();
+                String to = s.next();
+                reguli.add(new ProductionRule(from.charAt(0), to));
             }
             System.out.println(reguli);
-            Utils.initFirstMap(reguli);
+            Utils.initUtils(reguli);
+            Utils.generateAndPrintFirstMap();
         }catch(FileNotFoundException ex) {
             System.out.println("Du-te acasa");
         }
-
-        System.out.println(Utils.firstMap);
-
     }
     
     public static void verificareLR1(List<ProductionRule> reguli){

@@ -2,62 +2,48 @@ package com.bajetii.proiecttc;
 
 import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 
-import java.util.HashSet;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.List;
+import java.util.*;
+
 /**
  * Created by alexandru on 22.04.2017.
  */
 public class Utils {
-    public static Map<String, HashSet<String>> firstMap;
-    private static List<ProductionRule> rules;
+    private static Map<Character, HashSet<Character>> firstMap;
+    private static Map<Character, List<String>> rulesMap;
 
     static {
         firstMap = new HashMap<>();
+        rulesMap = new HashMap<>();
     }
 
-    public static void initFirstMap(List<ProductionRule> rules) {
-        Utils.rules = rules;
+    public static void initUtils(List<ProductionRule> rules) {
         for (ProductionRule rule: rules) {
-            processElem(rule.from, rules);
-            for (String s: rule.to)
-                for (int i = 0; i < s.length(); i++)
-                    processElem(s.charAt(i), rules);
+            if (rulesMap.get(rule.from) == null)
+                rulesMap.put(rule.from, new ArrayList<>());
+            rulesMap.get(rule.from).add(rule.to);
         }
     }
 
-    private static void processElem(char c, List<ProductionRule> rules) {
-        String index = c + "";
-        if (c == Constants.LAMBDA.getValue() || Character.isLowerCase(c)) {
-            Utils.first(index).add(index);
-            Utils.first(index).remove(Constants.LAMBDA.getValue());
-        }
-        else
-            for (ProductionRule rule: rules) {
-                if (rule.from == c) {
-                    for (String aux: rule.to)
-                        for (int i = 0; i < aux.length(); i++)
-                            Utils.first(index).addAll(first(aux.charAt(i) + ""));
-                    if (Utils.first(index).size() > 1)
-                        Utils.first(index).remove(Constants.LAMBDA.getValue());
-                }
+    public static Set<Character> first(char c) {
+        if (firstMap.get(c) == null) {
+            HashSet<Character> set = new HashSet<>();
+            if (c == Constants.LAMBDA.getValue() || Character.isLowerCase(c))
+                set.add(c);
+            else {
+                if (rulesMap.get(c) != null)
+                    for (String s: rulesMap.get(c))
+                        set.addAll(first(s.charAt(0)));
             }
-    }
-
-
-    public static Set<String> first(String s) {
-        if (firstMap.get(s) == null) {
-            firstMap.put(s, new HashSet<>());
-            if (Character.isLowerCase(s.charAt(0)))
-                firstMap.get(s).add(s);
-            else
-                processElem(s.charAt(0), rules);
-                //firstMap.get(s).add(Constants.LAMBDA.getValue() + "");
+            firstMap.put(c, set);
         }
-        return firstMap.get(s);
+
+        return firstMap.get(c);
     }
 
-
+    /** Should only be used for debugging purposes **/
+    public static void generateAndPrintFirstMap() {
+        for (char c: rulesMap.keySet())
+            first(c);
+        System.out.println(firstMap);
+    }
 }
