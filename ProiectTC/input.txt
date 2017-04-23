@@ -1,3 +1,3 @@
-A A+B
-A a
-B b
+S XX
+X aX
+X b

@@ -26,8 +26,10 @@ public class Parser {
             System.out.println("We are at state "+ state + " and we read "+currentChar);
             System.out.println(stack);
             action = parserTable.getAction(state, currentChar);
-            System.out.println(action);
-            if (action.type == ActionType.TRANSITION)
+
+            if (action == null || action.type == ActionType.ERROR)
+                return false;
+            else if (action.type == ActionType.TRANSITION)
                 state = action.stateIndex;
             else if (action.type == ActionType.SHIFT) {
                 stack.addLast(s.charAt(i));
@@ -36,8 +38,7 @@ public class Parser {
             } else if (action.type == ActionType.REDUCE) {
                 reduceStack(action.stateIndex, stack);
                 state = recomputeState(stack);
-            } else if (action.type == ActionType.ERROR)
-                return false;
+            }
         }
 
         action = parserTable.getAction(state, '$');
@@ -48,6 +49,9 @@ public class Parser {
                 reduceStack(action.stateIndex, stack);
                 state = recomputeState(stack);
             }
+            action = parserTable.getAction(state, '$');
+            if (stack.size() == 1 && stack.getFirst() == rules.get(0).from)
+                return true;
         }
 
         return parserTable.getAction(state, '$').type == ActionType.ACCEPT;
@@ -61,10 +65,10 @@ public class Parser {
             sb.append(c);
 
         String s = sb.toString();
-        String reducedS = s.replaceAll(rule.to, rule.from + "");
+        String reducedS = s.replace(rule.to, rule.from + "");
         while (!s.equals(reducedS)) {
             s = reducedS;
-            reducedS = s.replaceAll(rule.to, rule.from + "");
+            reducedS = s.replace(rule.to, rule.from + "");
         }
 
         stack.clear();
