@@ -41,6 +41,7 @@ public class Main {
             Utils.initUtils(rules);
             Utils.generateAndPrintFirstMap();
             ParserTable table = verificareLR1(rules);
+            Utils.generateAndPrintFollowMap();
         }catch(FileNotFoundException ex) {
             System.out.println("Du-te acasa");
         }
