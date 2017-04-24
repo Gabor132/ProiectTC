@@ -93,7 +93,6 @@ public class Utils {
         vizitedConfigs.add(I.configs.get(0));
         while(configurations.size() > 0){
             Config currentConfig = configurations.pop();
-            System.out.println("Working with " + currentConfig);
             List<Config> newConfig = new LinkedList<>();
             try{
                 char cForClosure = currentConfig.getMarkedByDot();
@@ -119,7 +118,6 @@ public class Utils {
             for(Config config : newConfig){
                 if(!vizitedConfigs.contains(config)){
                     I.configs.add(config);
-                    System.out.println("Found: "+config);
                     configurations.push(config);
                     vizitedConfigs.add(config);
                 }
@@ -127,17 +125,15 @@ public class Utils {
         }
     }
     
-    public static boolean configAlreadyExistsInAutomat(List<Configs> automat, Config config) {
+    public static Configs configAlreadyExistsInAutomat(List<Configs> automat, Config config) {
         for (Configs configs : automat) {
             for (Config auxConfig : configs.configs) {
                 if (auxConfig.equals(config)) {
-                    System.out.println("True: " + auxConfig);
-                    return true;
+                    return configs;
                 }
             }
         }
-        System.out.println("False");
-        return false;
+        return null;
     }
 
     public static void generateAndPrintFollowMap() {

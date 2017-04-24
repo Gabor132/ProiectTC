@@ -5,10 +5,8 @@
  */
 package com.bajetii.proiecttc;
 
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 import javafx.util.Pair;
 
 /**
@@ -17,24 +15,31 @@ import javafx.util.Pair;
  */
 public class Configs {
     public List<Config> configs;
-    public List<Pair<Character, Configs>> tranzitions;
+    public HashSet<Pair<Character, Configs>> tranzitions;
     public int index;
     
-    private static int nextIndex = 0;
+    public static int nextIndex = 0;
     
     public Configs(List<Config> configs){
         this.configs = configs;
         this.index = nextIndex;
-        this.tranzitions = new LinkedList<>();
+        this.tranzitions = new HashSet<>();
         nextIndex++;
     }
     
-    public static void follow(){
-        
-    }
-    
-    public static void goTo(){
-        
+    public boolean canMerge(Configs config){
+        for(Config c : configs){
+            boolean hasPair = false;
+            for(Config c2 : config.configs){
+                hasPair = (c.from.equals(c2.from) && c.to.equals(c2.to) && c.index == c2.index);
+                if(hasPair)
+                    break;
+            }
+            if(!hasPair)
+                return false;
+        }
+        System.out.println(this + " can merge with " + config);
+        return true;
     }
     
     @Override
@@ -43,6 +48,11 @@ public class Configs {
         for(Config c:configs){
             s += c.toString() + "\n";
         }
+        s += "[";
+        for(Pair<Character, Configs> tran : tranzitions){
+            s += tran.getKey()+":I"+tran.getValue().index+" ";
+        }
+        s += "]\n";
         return s;
     }
 }

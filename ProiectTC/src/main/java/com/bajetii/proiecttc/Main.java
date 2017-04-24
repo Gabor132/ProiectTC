@@ -83,11 +83,12 @@ public class Main {
                     LinkedList<Config> similarConfigs = new LinkedList<>();
                     similarConfigs.add(config);
                     for(Config config2 : I.configs){
-                        if(config.hasSameTransitionChar(config2)){
+                        if(!config.equals(config2) && config.hasSameTransitionChar(config2)){
                             similarConfigs.add(config2);
                         }
                     }
                     LinkedList<Config> newListConfig = new LinkedList<>();
+                    Set<Pair<Character, Configs>> tranzitionsThatExist = new HashSet<>();
                     for(Config config2 : similarConfigs){
                         Config newConfig;
                         for(ProductionRule rule : rules){
@@ -95,12 +96,16 @@ public class Main {
                                 newConfig = rule.getConfig();
                                 newConfig.index = config2.index+1;
                                 newConfig.lookAhead = config2.lookAhead;
-                                if(Utils.configAlreadyExistsInAutomat(automat, newConfig))
+                                Configs configsThatAlreadyContains = Utils.configAlreadyExistsInAutomat(automat, newConfig);
+                                if(configsThatAlreadyContains != null){
+                                    tranzitionsThatExist.add(new Pair<>(cForTransition, configsThatAlreadyContains));
                                     continue;
+                                }
                                 newListConfig.add(newConfig);
                             }
                         }
                     }
+                    I.tranzitions.addAll(tranzitionsThatExist);
                     if(!newListConfig.isEmpty()){
                         Configs newConfigs = new Configs(newListConfig);
                         queueConfigs.addLast(newConfigs);
@@ -113,7 +118,60 @@ public class Main {
             }
         }
         System.out.println("Automatul: \n" + automat);
+        automat = reduceAutomat(automat);
         return generateParserTable(automat, rules);
+    }
+    
+    public static List<Configs> reduceAutomat(List<Configs> automat){
+        List<Configs> reducedAutomat = new LinkedList<>();
+        for(int i = automat.size()-1; i>=0; i--){
+            Configs config1 = automat.get(i);
+            for(int j = i-1; j>=0; j--){
+                Configs config2 = automat.get(j);
+                if(config1.canMerge(config2)){
+                    List<Config> configs = new LinkedList<>();
+                    for(Config c : config1.configs){
+                        c.lookAhead.addAll(config2.configs.get(0).lookAhead);
+                        configs.add(c);
+                    }
+                    Configs merged = new Configs(configs);
+                    merged.tranzitions = config1.tranzitions;
+                    merged.tranzitions.addAll(config2.tranzitions);
+                    for(Configs c : automat){
+                        List<Character> lc = new LinkedList<>();
+                        List<Pair<Character, Configs>> tranzitionsToRemove = new LinkedList<>();
+                        for(Pair<Character, Configs> t : c.tranzitions){
+                            if(t.getValue().equals(config1) || t.getValue().equals(config2)){
+                                lc.add(t.getKey());
+                                tranzitionsToRemove.add(t);
+                            }
+                        }
+                        for(Pair<Character, Configs> t : tranzitionsToRemove){
+                            c.tranzitions.remove(t);
+                        }
+                        for(Character cc : lc){
+                            if(!c.tranzitions.contains(new Pair<>(cc, merged))){
+                                c.tranzitions.add(new Pair<>(cc, merged));
+                            }
+                        }
+                    }
+                    reducedAutomat.add(merged);
+                    i--;
+                    automat.remove(config1);
+                    automat.remove(config2);
+                }
+            }
+        }
+        System.out.println(reducedAutomat);
+        automat.addAll(reducedAutomat);
+        int i = 0;
+        for(Configs c : automat){
+            c.index = i;
+            i++;
+        }
+        Configs.nextIndex = automat.size();
+        System.out.println(automat);
+        return automat;
     }
     
     public static ParserTable generateParserTable(List<Configs> automat, List<ProductionRule> rules){

@@ -26,7 +26,7 @@ public class Parser {
             System.out.println("We are at state "+ state + " and we read "+currentChar);
             System.out.println(stack);
             action = parserTable.getAction(state, currentChar);
-
+            System.out.println(action);
             if (action == null || action.type == ActionType.ERROR)
                 return false;
             else if (action.type == ActionType.TRANSITION)
@@ -40,9 +40,12 @@ public class Parser {
                 state = recomputeState(stack);
             }
         }
-
+        System.out.println("We are at state "+ state);
+        System.out.println(stack);
         action = parserTable.getAction(state, '$');
+        System.out.println(action);
         while (action.type != ActionType.ACCEPT && action.type != ActionType.ERROR) {
+            
             if (action.type == ActionType.TRANSITION)
                 state = action.stateIndex;
             else if (action.type == ActionType.REDUCE) {
@@ -50,10 +53,12 @@ public class Parser {
                 state = recomputeState(stack);
             }
             action = parserTable.getAction(state, '$');
+            System.out.println("We are at state "+ state);
+            System.out.println(stack);
+            System.out.println(action);
             if (stack.size() == 1 && stack.getFirst() == rules.get(0).from)
                 return true;
         }
-
         return parserTable.getAction(state, '$').type == ActionType.ACCEPT;
     }
 

@@ -8,8 +8,10 @@ package com.bajetii.proiecttc;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import javafx.util.Pair;
 
 /**
@@ -78,10 +80,12 @@ public class ParserTable {
             rows.add(new ParserRow(elements, currentI));
         }
         LinkedList<Configs> queueConfigs = new LinkedList<>();
+        Set<Configs> vizitetConfigs = new HashSet<>();
         queueConfigs.addFirst(automat.get(0));
         System.out.println("Filling table");
         while(queueConfigs.size() > 0){
             Configs currentI = queueConfigs.removeFirst();
+            vizitetConfigs.add(currentI);
             for(Config config : currentI.configs){
                 if(config.isMarkedOut()){
                     for(Character c : config.lookAhead){
@@ -115,7 +119,9 @@ public class ParserTable {
                     rows.get(currentI.index).actions.get(tranzition.getKey()).type = ActionType.TRANSITION;
                     rows.get(currentI.index).actions.get(tranzition.getKey()).stateIndex = tranzition.getValue().index;
                 }
-                queueConfigs.addFirst(tranzition.getValue());
+                if(!vizitetConfigs.contains(tranzition.getValue())){
+                    queueConfigs.addFirst(tranzition.getValue());
+                }
             }
         }
     }
