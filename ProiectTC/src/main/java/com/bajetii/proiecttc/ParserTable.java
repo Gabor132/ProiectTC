@@ -96,7 +96,7 @@ public class ParserTable {
                             rows.get(currentI.index).actions.get(c).type = ActionType.REDUCE;
                             for(int i = 0; i < rules.size(); i++){
                                 if(rules.get(i).equals(config)){
-                                    if(i == 0){
+                                    if(i == 0 && c.equals('$')){
                                         rows.get(currentI.index).actions.get(c).type = ActionType.ACCEPT;
                                     }
                                     rows.get(currentI.index).actions.get(c).stateIndex = i+1;

@@ -33,6 +33,9 @@ public class Main {
                 for(char c : to.toCharArray()){
                     elements.add(c);
                 }
+                if(to.equals("~")){
+                    to = "";
+                }
                 rules.add(new ProductionRule(from.charAt(0), to));
             }
             rules.add(new ProductionRule('T', rules.get(0).from + ""));

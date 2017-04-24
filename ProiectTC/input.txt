@@ -1,3 +1,2 @@
-A A+B
-A a
-B b
+S aSbS
+S ~
