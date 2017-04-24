@@ -36,9 +36,14 @@ public class Utils {
                 set.add(c);
             else {
                 if (rulesMap.get(c) != null)
-                    for (String s: rulesMap.get(c))
-                        if (s.charAt(0) != c)
-                            set.addAll(first(s.charAt(0)));
+                    for (String s: rulesMap.get(c)){
+                        try{
+                            if (s.charAt(0) != c)
+                                set.addAll(first(s.charAt(0)));
+                        }catch(StringIndexOutOfBoundsException ex){
+                            set.add('$');
+                        }
+                    }
             }
             firstMap.put(c, set);
         }

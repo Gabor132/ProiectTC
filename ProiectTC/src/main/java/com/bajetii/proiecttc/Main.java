@@ -121,14 +121,16 @@ public class Main {
             }
         }
         System.out.println("Automatul: \n" + automat);
-        automat = reduceAutomat(automat);
+        //automat = reduceAutomat(automat);
         return generateParserTable(automat, rules);
     }
     
     public static List<Configs> reduceAutomat(List<Configs> automat){
         List<Configs> reducedAutomat = new LinkedList<>();
+        //luam un configs de la sfarsit
         for(int i = automat.size()-1; i>=0; i--){
             Configs config1 = automat.get(i);
+            //luam urmatoarele configs
             for(int j = i-1; j>=0; j--){
                 Configs config2 = automat.get(j);
                 if(config1.canMerge(config2)){

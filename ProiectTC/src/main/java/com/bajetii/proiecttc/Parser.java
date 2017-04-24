@@ -70,12 +70,16 @@ public class Parser {
             sb.append(c);
 
         String s = sb.toString();
-        String reducedS = s.replace(rule.to, rule.from + "");
-        while (!s.equals(reducedS)) {
-            s = reducedS;
-            reducedS = s.replace(rule.to, rule.from + "");
+        String reducedS;
+        reducedS = s.replace(rule.to, rule.from + "");
+        if(!rule.to.equals("")){
+            while (!s.equals(reducedS)) {
+                s = reducedS;
+                reducedS = s.replace(rule.to, rule.from + "");
+            }
+        }else{
+            s += rule.from;
         }
-
         stack.clear();
         for (int i = 0; i < s.length(); i++)
             stack.addLast(s.charAt(i));
@@ -85,7 +89,7 @@ public class Parser {
         int state = 0;
         for (Character c: stack) {
             Action action = parserTable.getAction(state, c);
-            if (action.type == ActionType.TRANSITION)
+            if (action.type == ActionType.TRANSITION || action.type == ActionType.SHIFT)
                 state = action.stateIndex;
         }
 
