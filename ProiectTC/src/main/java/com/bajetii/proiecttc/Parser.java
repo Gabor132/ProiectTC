@@ -27,10 +27,13 @@ public class Parser {
             System.out.println(stack);
             action = parserTable.getAction(state, currentChar);
             System.out.println(action);
-            if (action == null || action.type == ActionType.ERROR)
+            if (action == null || action.type == ActionType.ERROR) {
+                System.out.println("Error encountered");
                 return false;
-            else if (action.type == ActionType.TRANSITION)
+            }
+            else if (action.type == ActionType.TRANSITION) {
                 state = action.stateIndex;
+            }
             else if (action.type == ActionType.SHIFT) {
                 stack.addLast(s.charAt(i));
                 state = action.stateIndex;
@@ -46,8 +49,9 @@ public class Parser {
         System.out.println(action);
         while (action.type != ActionType.ACCEPT && action.type != ActionType.ERROR) {
             
-            if (action.type == ActionType.TRANSITION)
+            if (action.type == ActionType.TRANSITION) {
                 state = action.stateIndex;
+            }
             else if (action.type == ActionType.REDUCE) {
                 reduceStack(action.stateIndex, stack);
                 state = recomputeState(stack);

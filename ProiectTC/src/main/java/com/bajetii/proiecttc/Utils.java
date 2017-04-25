@@ -43,6 +43,7 @@ public class Utils {
                         }catch(StringIndexOutOfBoundsException ex){
                             set.add('$');
                         }
+                        firstMap.put(c, set);
                     }
             }
             firstMap.put(c, set);

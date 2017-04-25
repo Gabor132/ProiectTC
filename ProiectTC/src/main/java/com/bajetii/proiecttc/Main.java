@@ -54,9 +54,15 @@ public class Main {
     public static void parseInputStrings(ParserTable table) {
         try (Scanner reader = new Scanner(new File("strings.txt"))) {
             Parser parser = new Parser(table);
+            System.out.println("Parsing input strings...");
             while (reader.hasNextLine()) {
+                System.out.println("======================");
                 String s = reader.nextLine();
-                System.out.println(parser.accept(s));
+                System.out.println("String: " + s);
+                if (parser.accept(s))
+                    System.out.println("RESULT: ACCEPTED");
+                else
+                    System.out.println("RESULT: REJECTED");
             }
         } catch (FileNotFoundException ex) {
             System.out.println("Du-te acasa2");
