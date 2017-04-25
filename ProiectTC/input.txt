@@ -1,8 +1,6 @@
-E TX
-X +TX
-X ~
-T FY
-Y *FY
-Y ~
+E N
+E E+N
+N N*F
+N F
+F a
 F (E)
-F i

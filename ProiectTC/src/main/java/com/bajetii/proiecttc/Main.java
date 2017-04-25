@@ -84,7 +84,8 @@ public class Main {
             Configs I = queueConfigs.removeFirst();
             System.out.println("Luam I" + I.index);
             System.out.println("Before closure: \n" + I);
-            Utils.closure(I, rules);
+            Utils.closure(I, rules, automat);
+            //mergeConfig(I);
             System.out.println("After closure: \n" + I);
             for(Config config : I.configs){
                 try{
@@ -194,4 +195,8 @@ public class Main {
         System.out.println("Is grammar LR(1)? " + !table.hasConflicts);
         return table;
     }
+    
+    public static void mergeConfig(Configs I){
+    }
+    
 }

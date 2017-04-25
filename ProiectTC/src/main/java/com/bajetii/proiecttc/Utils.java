@@ -92,7 +92,7 @@ public class Utils {
         System.out.println(firstMap);
     }
     
-    public static void closure(Configs I, List<ProductionRule> rules){
+    public static void closure(Configs I, List<ProductionRule> rules, List<Configs> automat){
         LinkedList<Config> configurations = new LinkedList<>();
         configurations.addAll(I.configs);
         Set<Config> vizitedConfigs = new HashSet();
@@ -103,7 +103,7 @@ public class Utils {
             try{
                 char cForClosure = currentConfig.getMarkedByDot();
                 for(ProductionRule rule : rules){
-                    if(Objects.equals(rule.from, currentConfig.getMarkedByDot())){
+                    if(Objects.equals(rule.from, cForClosure)){
                         newConfig.add(rule.getConfig());
                     }
                 }
@@ -126,6 +126,18 @@ public class Utils {
                     I.configs.add(config);
                     configurations.push(config);
                     vizitedConfigs.add(config);
+                }
+            }
+        }
+        System.out.println(I);
+        for(int i = 0; i<I.configs.size();i++){
+            Config c = I.configs.get(i);
+            for(int j = i+1; j < I.configs.size(); j++){
+                Config c2 = I.configs.get(j);
+                if(c.from.equals(c2.from) && c.to.equals(c2.to) && c.index == c2.index && !c.lookAhead.equals(c2.lookAhead)){
+                    c.lookAhead.addAll(c2.lookAhead);
+                    I.configs.remove(c2);
+                    j--;
                 }
             }
         }
