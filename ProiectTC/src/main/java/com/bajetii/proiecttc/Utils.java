@@ -113,12 +113,13 @@ public class Utils {
             try{
                 char cForFirst = currentConfig.getAfterDot();
                 Set<Character> newLookAhead = Utils.first(cForFirst);
+                currentConfig.lookAhead.addAll(newLookAhead);
                 for(Config config : newConfig){
-                    config.lookAhead = newLookAhead;
+                    config.lookAhead.addAll(newLookAhead);
                 }
             }catch(IndexOutOfBoundsException ex){
                 for(Config config : newConfig){
-                    config.lookAhead = currentConfig.lookAhead;
+                    config.lookAhead.addAll(currentConfig.lookAhead);
                 }
             }
             for(Config config : newConfig){
@@ -130,17 +131,19 @@ public class Utils {
             }
         }
         System.out.println(I);
-        for(int i = 0; i<I.configs.size();i++){
+        for(int i = 0; i < I.configs.size();i++){
             Config c = I.configs.get(i);
             for(int j = i+1; j < I.configs.size(); j++){
                 Config c2 = I.configs.get(j);
-                if(c.from.equals(c2.from) && c.to.equals(c2.to) && c.index == c2.index && !c.lookAhead.equals(c2.lookAhead)){
+                if(c.from.equals(c2.from) && c.to.equals(c2.to) && c.index == c2.index &&
+                        !(c.lookAhead.containsAll(c2.lookAhead) && c2.lookAhead.containsAll(c.lookAhead))){
                     c.lookAhead.addAll(c2.lookAhead);
                     I.configs.remove(c2);
                     j--;
                 }
             }
         }
+        System.out.println(I);
     }
     
     public static Configs configAlreadyExistsInAutomat(List<Configs> automat, Config config) {
